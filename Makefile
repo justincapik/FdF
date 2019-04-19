@@ -6,7 +6,7 @@
 #    By: jucapik <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/04 13:09:58 by jucapik           #+#    #+#              #
-#    Updated: 2019/01/30 15:01:03 by jucapik          ###   ########.fr        #
+#    Updated: 2019/04/19 14:40:44 by jucapik          ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -32,9 +32,21 @@ HEADERS0	=	$(addprefix $(HDRPATH0)/, $(HDR0))
 
 MLXNAME		=	mlx
 
-MLXPATH		=	/usr/local/lib
+ifeq ($(OS),Windows_NT) 
+    detected_OS := Windows
+else
+    detected_OS := $(shell sh -c 'uname 2>/dev/null || echo Unknown')
+endif
 
-MLXHEAD		=	/usr/local/include
+ifeq ($(detected_OS), Darwin)
+	MLXPATH		=	./minilibx_macos
+
+	MLXHEAD		=	./minilibx_macos
+else
+	MLXPATH		=	./minilibx_linux
+
+	MLXHEAD		=	./minilibx_linux
+endif
 
 LIBNAME		=	ft
 
@@ -52,17 +64,21 @@ OBJ0		=	$(SRC0:.c=.o)
 all:		$(NAME)
 
 $(NAME):	$(OBJ0) $(HDRPATH0)/$(HDR0)
+	cd $(MLXPATH) && $(MAKE)
 	cd $(LIBPATH) && $(MAKE)
 	$(CC) -o $(NAME) $(OBJ0) -I $(LIBHEAD) -L $(LIBPATH) -l$(LIBNAME) \
 		-I $(MLXHEAD) -L $(MLXPATH) -l$(MLXNAME) \
 		-lmlx -framework OpenGL -framework AppKit
 
+
 clean:
-	@(cd $(LIBPATH) && $(MAKE) clean)
+	cd $(LIBPATH) && $(MAKE) clean
+	cd $(MLXPATH) && $(MAKE) clean
 	rm -rf $(OBJ0)
 
 fclean:
-	@(cd $(LIBPATH) && $(MAKE) fclean)
+	cd $(LIBPATH) && $(MAKE) fclean
+	cd $(MLXPATH) && $(MAKE) clean
 	rm -rf $(OBJ0)
 	rm -rf $(NAME)
 
