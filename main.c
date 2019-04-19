@@ -6,7 +6,7 @@
 /*   By: jucapik <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/04 11:18:39 by jucapik           #+#    #+#             */
-/*   Updated: 2019/01/30 09:43:47 by jucapik          ###   ########.fr       */
+/*   Updated: 2019/04/19 13:39:38 by jucapik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,11 @@ static void	usage(t_img *img)
 	free_img(img);
 	(void)img;
 	ft_putstr("usage: ./fdf image.fdf\n");
+	ft_putstr("controls:\n\tI, O, P for rotations\n");
+	ft_putstr("\tK and L for zoom or unzoom\n");
+	ft_putstr("\tU and Y to increase or decrease altitude\n");
+	ft_putstr("\tM to restor to inital placement\n");
+	ft_putstr("\tJ to switch between Parallele and Isometric views\n");
 	exit(1);
 }
 
